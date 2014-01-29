@@ -76,8 +76,11 @@ class LdapAuthUserProvider implements Auth\UserProviderInterface
         if ( ! $user = $credentials[$this->getUsernameField()] ) {
             throw new InvalidArgumentException;
         }
-
-        $infoCollection = $this->ad->user()->infoCollection($user, array('*'));
+        $fields = array('*');
+        if ( ! empty($this->config['fields'])) {
+            $fields = $this->config['fields'];
+        }
+        $infoCollection = $this->ad->user()->infoCollection($user, $fields);
 
         if ($infoCollection) {
             $ldapUserInfo = $this->setInfoArray($infoCollection);
