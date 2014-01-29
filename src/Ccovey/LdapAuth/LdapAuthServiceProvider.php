@@ -28,7 +28,7 @@ class LdapAuthServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['auth'] = $this->app->share(function($app)
+		$this->app->bindShared('auth', function($app)
 		{
 			$app['app.loaded'] = true;
 			return new LdapAuthManager($app);
