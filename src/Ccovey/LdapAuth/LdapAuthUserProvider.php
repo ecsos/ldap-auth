@@ -48,7 +48,11 @@ class LdapAuthUserProvider implements Auth\UserProviderInterface
     {
         $ldapUserInfo = null;
         
-        $infoCollection = $this->ad->user()->infoCollection($identifier, array('*') );
+        $fields = array('*');
+        if ( ! empty($this->config['fields'])) {
+            $fields = array_values($this->config['fields']);
+        }
+        $infoCollection = $this->ad->user()->infoCollection($identifier, $fields );
 
         if ( $infoCollection ) {
             $ldapUserInfo = $this->setInfoArray($infoCollection);
@@ -78,7 +82,7 @@ class LdapAuthUserProvider implements Auth\UserProviderInterface
         }
         $fields = array('*');
         if ( ! empty($this->config['fields'])) {
-            $fields = $this->config['fields'];
+            $fields = array_values($this->config['fields']);
         }
         $infoCollection = $this->ad->user()->infoCollection($user, $fields);
 
@@ -177,13 +181,6 @@ class LdapAuthUserProvider implements Auth\UserProviderInterface
     protected function addLdapToModel($model, $ldap)
     {
         $combined = $ldap + $model->getAttributes();
-        if (isset($this->config['fieldsLdapToModel']))
-        {
-            foreach($this->config['fieldsLdapToModel'] as $fieldldap => $fieldmodel)
-            {
-                $combined[$fieldmodel] = $ldap[$fieldldap];
-            }
-        }
         return $model->fill($combined);
     }
 
