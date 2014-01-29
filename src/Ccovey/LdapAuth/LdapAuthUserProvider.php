@@ -177,7 +177,13 @@ class LdapAuthUserProvider implements Auth\UserProviderInterface
     protected function addLdapToModel($model, $ldap)
     {
         $combined = $ldap + $model->getAttributes();
-
+        if (isset($this->config['fieldsLdapToModel']))
+        {
+            foreach($this->config['fieldsLdapToModel'] as $fieldldap => $fieldmodel)
+            {
+                $combined[$fieldmodel] = $ldap[$fieldldap];
+            }
+        }
         return $model->fill($combined);
     }
 
