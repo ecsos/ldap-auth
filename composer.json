@@ -13,7 +13,7 @@
         "illuminate/support": "4.1.x",
         "illuminate/auth": "4.1.x",
         "illuminate/config": "4.1.x",
-        "adldap/adldap": "4.0.x"
+        "adldap/adldap": "dev-master"
     },
     "require-dev": {
         "mockery/mockery": "dev-master"
@@ -23,5 +23,9 @@
             "Ccovey\\LdapAuth": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
